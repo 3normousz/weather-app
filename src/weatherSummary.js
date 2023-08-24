@@ -13,9 +13,9 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
 
     function kelvin_to_unit(temp, unitValue) {
         switch (unitValue) {
-            case "0":
+            case 0:
                 return Math.floor(temp - 273.15);
-            case "1":
+            case 1:
                 return Math.floor((temp - 273.15) * 9 / 5 + 32)
             default:
                 return Math.floor(temp - 273.15);
@@ -23,9 +23,9 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
     }
     function celsius_to_unit(temp, unitValue) {
         switch (unitValue) {
-            case "0":
+            case 0:
                 return Math.floor(temp);
-            case "1":
+            case 1:
                 return Math.floor(temp * 9 / 5 + 32);
             default:
                 return Math.floor(temp);
@@ -33,15 +33,15 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
     }
     function unitDisplay(unitValue) {
         switch (unitValue) {
-            case "0":
+            case 0:
                 return "°C";
-            case "1":
+            case 1:
                 return "°F";
             default:
                 return "°C";
         }
     }
-    function now_to_end(hourlyForeCast) {
+    function getCurrentTimeStampIndex(hourlyForeCast) {
         let cnt = 0;
         while (hourlyForeCast.current_weather.time != hourlyForeCast.hourly.time[cnt]) {
             cnt++;
@@ -60,18 +60,17 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
 
     function componentsArray() {
         let arr = [];
-        for (let i = now_to_end(hourlyForeCast); i <= 167; i++) {
+        for (let i = getCurrentTimeStampIndex(hourlyForeCast); i <= 167; i++) {
             let hourly = hourlyForeCast.hourly;
             arr.push(<ForeCastComponent key={i} timestamp={hourly.time[i]} temp={hourly.temperature_2m[i]} />);
         }
         return arr;
     };
 
-
     return (
         <div>
             <div className='flex items-center justify-center mt-16'>
-                <img alt="weather-icon" src="" />
+                <img alt="weather-icon" src={`icons/${weather[0].icon}.png`} />
             </div>
 
             <div className='flex items-center justify-center'>
@@ -84,7 +83,10 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
                 <p className='text-white text-lg'>{weather[0].description}</p>
             </div>
             <div className='flex flex-row items-center justify-center'>
-                <p className='text-white text-lg'>High: {Math.floor(dailyTempData.daily.temperature_2m_max[0])} {unitDisplay(unitValue)} | Low: {Math.floor(dailyTempData.daily.temperature_2m_min[0])} {unitDisplay(unitValue)}</p>
+                <p className='text-white text-lg'>
+                    High: {Math.floor(dailyTempData.daily.temperature_2m_max[0])} {unitDisplay(unitValue)} |
+                    Low: {Math.floor(dailyTempData.daily.temperature_2m_min[0])} {unitDisplay(unitValue)}
+                </p>
             </div>
             <div className="overflow-hidden">
                 <div className="flex flex-row rounded overflow-x-auto text-white shadow-lg mt-6 bg-gray-500">

@@ -50,13 +50,13 @@ function SearchBar({ onInputValue, unitValue }) {
       <div className="flex flex-row justify-center">
         <button
           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
-          onClick={() => handleUnitChange("0")}
+          onClick={() => handleUnitChange(0)}
         >
           °C
         </button>
         <button
           className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
-          onClick={() => handleUnitChange("1")}
+          onClick={() => handleUnitChange(1)}
         >
           °F
         </button>
