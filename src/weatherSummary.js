@@ -1,10 +1,10 @@
 import React from "react";
 import './App.css';
 
-function WeatherSummary({ weatherData, unitValue }) {
+function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue }) {
 
 
-    if (!weatherData) {
+    if (!weatherData || !dailyTempData || !hourlyForeCast) {
         return null;
     }
 
@@ -21,9 +21,35 @@ function WeatherSummary({ weatherData, unitValue }) {
                 return Math.floor(temp - 273.15);
         }
     }
+    function now_to_end(hourlyForeCast) {
+        let cnt = 0;
+        while (hourlyForeCast.current_weather.time != hourlyForeCast.hourly.time[cnt]) {
+            cnt++;
+        }
+        console.log("cnt = " + cnt);
+        return cnt;
+    };
+
+    function ForeCastComponent(props) {
+        return (
+            <div className="px-6 py-4">
+                <div className="font-bold text-xl mb-2">{props.timestamp}</div>
+                <div className="text-white text-base">{props.temp}</div>
+            </div>
+        );
+    };
+
+    function componentsArray() {
+        let arr = [];
+        for (let i = now_to_end(hourlyForeCast); i <= 167; i++) {
+            arr.push(<ForeCastComponent timestamp={hourlyForeCast.hourly.time[i]} temp={hourlyForeCast.hourly.temperature_2m[i]} />);
+        }
+        return arr;
+    };
+
+
     return (
         <div>
-
             <div className='flex items-center justify-center mt-16'>
                 <img alt="weather-icon" src="" />
             </div>
@@ -37,17 +63,14 @@ function WeatherSummary({ weatherData, unitValue }) {
             <div className='flex flex-row items-center justify-center'>
                 <p className='text-white text-lg'>{weather[0].description}</p>
             </div>
-        </div>
-        /*
-        <div>
-            <div class="px-6 py-4">
-                <img className="object-cover" src='PartlyCloudy-night_2.jpg' />
-                <div class="font-bold text-xl mb-2 text-white">The Coldest Sunset</div>
-                <p class="text-white text-base">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Voluptatibus quia, nulla! Maiores et perferendis eaque, exercitationem praesentium nihil.
-                </p>
+            <div className='flex flex-row items-center justify-center'>
+                <p className='text-white text-lg'>High: {dailyTempData.daily.temperature_2m_max[0]} Low: {dailyTempData.daily.temperature_2m_min[0]}</p>
             </div>
-        </div >*/
+            <div className="flex flex-row items-center justify-center rounded overflow-x-scroll shadow-lg text-white">
+                {componentsArray()}
+
+            </div>
+        </div>
     )
 }
 
