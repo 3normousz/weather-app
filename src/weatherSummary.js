@@ -26,14 +26,13 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
         while (hourlyForeCast.current_weather.time != hourlyForeCast.hourly.time[cnt]) {
             cnt++;
         }
-        console.log("cnt = " + cnt);
         return cnt;
     };
 
     function ForeCastComponent(props) {
         return (
-            <div className="px-6 py-4">
-                <div className="font-bold text-xl mb-2">{props.timestamp}</div>
+            <div className="px-4 py-6">
+                <div className="font-bold text-xl mb-2">{props.timestamp.substring(11, 17)}</div>
                 <div className="text-white text-base">{props.temp}</div>
             </div>
         );
@@ -42,7 +41,8 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
     function componentsArray() {
         let arr = [];
         for (let i = now_to_end(hourlyForeCast); i <= 167; i++) {
-            arr.push(<ForeCastComponent timestamp={hourlyForeCast.hourly.time[i]} temp={hourlyForeCast.hourly.temperature_2m[i]} />);
+            let hourly = hourlyForeCast.hourly;
+            arr.push(<ForeCastComponent key={i} timestamp={hourly.time[i]} temp={hourly.temperature_2m[i]} />);
         }
         return arr;
     };
@@ -66,9 +66,8 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
             <div className='flex flex-row items-center justify-center'>
                 <p className='text-white text-lg'>High: {dailyTempData.daily.temperature_2m_max[0]} Low: {dailyTempData.daily.temperature_2m_min[0]}</p>
             </div>
-            <div className="flex flex-row items-center justify-center rounded overflow-x-scroll shadow-lg text-white">
+            <div className="flex flex-row rounded overflow-x-scroll bg-black text-white shadow-lg mt-6">
                 {componentsArray()}
-
             </div>
         </div>
     )
