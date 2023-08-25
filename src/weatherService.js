@@ -14,7 +14,7 @@ export const getDailyTemp = (lat, lon) => {
 };
 
 export const getHourlyForeCast = (lat, lon) => {
-    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon + '&hourly=temperature_2m&current_weather=true&timezone=auto');
+    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon + '&hourly=temperature_2m,weathercode&current_weather=true&timezone=auto');
     return fetch(url).then((res) => res.json())
 };
 

@@ -20,7 +20,7 @@ function SearchBar({ onInputValue, unitValue }) {
 
   const loadOptions = async (location) => {
     try {
-      const response = await fetch(`${DB_CITY_URL}places?limit=5&offset=0&types=CITY&namePrefix=${location}&minPopulation=100000`, dbCityOptions);
+      const response = await fetch(`${DB_CITY_URL}places?limit=5&offset=0&types=CITY&namePrefix=${location}&minPopulation=50000`, dbCityOptions);
       const responseData = await response.json();
       console.log(responseData);
       const options = responseData.data.map((city) => ({

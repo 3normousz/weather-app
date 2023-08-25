@@ -50,13 +50,25 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
     };
 
     function ForeCastComponent(props) {
+        let dateElement = null;
+
+        if (props.timestamp.substring(11, 17) === "00:00") {
+            dateElement = <div className="font-bold text-l mb-2">{props.timestamp.substring(6, 10)}</div>;
+        } else {
+            dateElement = <div className="font-bold text-l mb-2">&nbsp;</div>;
+        }
+
         return (
-            <div className="px-4 py-6">
-                <div className="font-bold text-xl mb-2">{props.timestamp.substring(11, 17)}</div>
-                <div className="text-white text-base">{celsius_to_unit(props.temp, unitValue)} {unitDisplay(unitValue)}</div>
+            <div className="px-6 py-6">
+                {dateElement}
+                <div className="font-bold text-xl">{props.timestamp.substring(11, 17)}</div>
+                <div className="text-white text-base">
+                    {celsius_to_unit(props.temp, unitValue)} {unitDisplay(unitValue)}
+                </div>
             </div>
         );
     };
+
 
     function componentsArray() {
         let arr = [];
