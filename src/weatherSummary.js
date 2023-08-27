@@ -62,7 +62,8 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
             <div className="px-6 py-6">
                 {dateElement}
                 <div className="font-bold text-xl">{props.timestamp.substring(11, 17)}</div>
-                <div className="text-white text-base">
+                <img alt="weather-icon" src={`icons/${props.weatherIconID}.png`} />
+                <div className="text-white text-base mt-1">
                     {celsius_to_unit(props.temp, unitValue)} {unitDisplay(unitValue)}
                 </div>
             </div>
@@ -74,9 +75,36 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
         let arr = [];
         for (let i = getCurrentTimeStampIndex(hourlyForeCast); i <= 167; i++) {
             let hourly = hourlyForeCast.hourly;
-            arr.push(<ForeCastComponent key={i} timestamp={hourly.time[i]} temp={hourly.temperature_2m[i]} />);
+            arr.push(<ForeCastComponent key={i} timestamp={hourly.time[i]}
+                temp={hourly.temperature_2m[i]}
+                weatherIconID={convertWeatherIcon(hourly.weathercode[i])}
+            />);
         }
         return arr;
+    };
+
+    function convertWeatherIcon(api1Code) {
+        const api1ToApi2Mapping = {
+            "0": "01d",  // Clear sky
+            "1": "02d", // Few clouds
+            "2": "02d",
+            "3": "02d",
+            "45": "50d", // Fog
+            "48": "50d",
+            "51": "09d", // Shower rain
+            "53": "09d",
+            "55": "09d",
+            "61": "10d", // Rain
+            "63": "10d",
+            "65": "10d",
+            "80": "09d", // Shower rain
+            "81": "09d",
+            "82": "09d",
+            "95": "11d", // Thunderstorm
+            "96": "11d",
+            "99": "11d",
+        };
+        return api1ToApi2Mapping[api1Code];
     };
 
     return (
