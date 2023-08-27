@@ -49,17 +49,17 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
         return cnt;
     };
 
-    function ForeCastComponent(props) {
+    function HourlyForeCastComponent(props) {
         let dateElement = null;
 
         if (props.timestamp.substring(11, 17) === "00:00") {
-            dateElement = <div className="font-bold text-l mb-2">{props.timestamp.substring(6, 10)}</div>;
+            dateElement = <div className="font-bold text-l">{props.timestamp.substring(6, 10)}</div>;
         } else {
-            dateElement = <div className="font-bold text-l mb-2">&nbsp;</div>;
+            dateElement = <div className="font-bold text-l">&nbsp;</div>;
         }
 
         return (
-            <div className="px-6 py-6">
+            <div className="px-6 py-2">
                 {dateElement}
                 <div className="font-bold text-xl">{props.timestamp.substring(11, 17)}</div>
                 <img alt="weather-icon" src={`icons/${props.weatherIconID}.png`} />
@@ -71,11 +71,11 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
     };
 
 
-    function componentsArray() {
+    function hourlyForeCastComponentCreation() {
         let arr = [];
         for (let i = getCurrentTimeStampIndex(hourlyForeCast); i <= 167; i++) {
             let hourly = hourlyForeCast.hourly;
-            arr.push(<ForeCastComponent key={i} timestamp={hourly.time[i]}
+            arr.push(<HourlyForeCastComponent key={i} timestamp={hourly.time[i]}
                 temp={hourly.temperature_2m[i]}
                 weatherIconID={convertWeatherIcon(hourly.weathercode[i])}
             />);
@@ -109,7 +109,7 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
 
     return (
         <div>
-            <div className='flex items-center justify-center mt-16'>
+            <div className='flex items-center justify-center mt-10'>
                 <img alt="weather-icon" src={`icons/${weather[0].icon}.png`} />
             </div>
 
@@ -130,7 +130,7 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
             </div>
             <div className="overflow-hidden">
                 <div className="flex flex-row rounded overflow-x-auto text-white shadow-lg mt-6 bg-gray-500">
-                    {componentsArray()}
+                    {hourlyForeCastComponentCreation()}
                 </div>
             </div>
         </div>
