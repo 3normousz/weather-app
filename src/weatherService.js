@@ -9,12 +9,14 @@ export const getWeatherData = (searchParameter) => {
 };
 
 export const getDailyTemp = (lat, lon) => {
-    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon + '&daily=temperature_2m_max,temperature_2m_min&timezone=auto');
+    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon +
+        '&daily=temperature_2m_max,temperature_2m_min&timeformat=unixtime&timezone=auto');
     return fetch(url).then((res) => res.json())
 };
 
 export const getHourlyForeCast = (lat, lon) => {
-    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon + '&hourly=temperature_2m,weathercode&current_weather=true&timezone=auto');
+    const url = new URL(ROOT_DAILY_TEMP_URL + lat + '&longitude=' + lon +
+        '&hourly=temperature_2m,weathercode&current_weather=true&timeformat=unixtime&timezone=auto');
     return fetch(url).then((res) => res.json())
 };
 

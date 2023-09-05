@@ -41,27 +41,53 @@ function WeatherSummary({ weatherData, dailyTempData, hourlyForeCast, unitValue 
                 return "°C";
         }
     }
+
+    function getTimeStamp(unix_timestamp) {
+        var date = new Date(unix_timestamp * 1000);
+
+        var hours = date.getHours();
+
+        var minutes = "0" + date.getMinutes();
+
+        var formattedTime = hours + ':' + minutes;
+
+        return [formattedTime, date.getDate(), date.getMonth() + 1];
+    }
+
     function getCurrentTimeStampIndex(hourlyForeCast) {
-        let cnt = 0;
-        while (hourlyForeCast.current_weather.time != hourlyForeCast.hourly.time[cnt]) {
-            cnt++;
+        let left = 0;
+        let right = 26;
+        let mid = 0;
+
+        while (left <= right) {
+            mid = Math.floor(left + (right - left) / 2);
+            if (hourlyForeCast.current_weather.time == hourlyForeCast.hourly.time[mid]) {
+                return mid;
+            }
+            if (hourlyForeCast.hourly.time[mid] < hourlyForeCast.current_weather.time) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
+            }
         }
-        return cnt;
     };
 
     function HourlyForeCastComponent(props) {
         let dateElement = null;
 
-        if (props.timestamp.substring(11, 17) === "00:00") {
-            dateElement = <div className="font-bold text-l">{props.timestamp.substring(6, 10)}</div>;
+
+        if (getTimeStamp(props.timestamp)[0] === "0:00") {
+            dateElement = <div className="font-bold text-l">{getTimeStamp(props.timestamp)[1]}/{getTimeStamp(props.timestamp)[2]}</div>;
         } else {
             dateElement = <div className="font-bold text-l">&nbsp;</div>;
         }
 
+
         return (
             <div className="px-6 py-2">
                 {dateElement}
-                <div className="font-bold text-xl">{props.timestamp.substring(11, 17)}</div>
+                <div className="font-bold text-xl">{getTimeStamp(props.timestamp)[0]}</div>
                 <img alt="weather-icon" src={`icons/${props.weatherIconID}.png`} />
                 <div className="text-white text-base mt-1">
                     {celsius_to_unit(props.temp, unitValue)} {unitDisplay(unitValue)}
