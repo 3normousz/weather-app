@@ -38,6 +38,11 @@
   }
 }
 
+.bg-card {
+
+  background-color: #fafaf2;
+}
+
 /* scrollbar */
 ::-webkit-scrollbar {
   width: 5px;

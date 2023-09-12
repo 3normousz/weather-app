@@ -10,7 +10,7 @@ function SearchBar({ onInputValue, unitValue }) {
 
   const handleChange = (selectedOption) => {
     setLocation(selectedOption);
-    onInputValue(selectedOption.value);
+    onInputValue(selectedOption.coord, selectedOption.label);
   };
 
   const handleUnitChange = (newUnit) => {
@@ -18,16 +18,22 @@ function SearchBar({ onInputValue, unitValue }) {
     unitValue(newUnit);
   };
 
+  async function temp_func(search_param) {
+    return await fetch("https://api.geoapify.com/v1/geocode/autocomplete?text=" + search_param + "&lang=en&limit=5&type=state&format=json&apiKey=f2f56c29a7ca4cb38bdbda41130ae76e")
+      .then(response => response.json())
+  }
   const loadOptions = async (location) => {
     try {
-      const response = await fetch(`${DB_CITY_URL}places?limit=5&offset=0&types=CITY&namePrefix=${location}&minPopulation=50000`, dbCityOptions);
-      const responseData = await response.json();
-      console.log(responseData);
-      const options = responseData.data.map((city) => ({
-        value: `${city.name}`,
-        label: `${city.name}, ${city.countryCode}`,
+      const responseData = await temp_func(location);
+      //const response = await fetch(`${DB_CITY_URL}places?limit=5&offset=0&types=CITY&namePrefix=${location}&minPopulation=50000`, dbCityOptions);
+      //const responseData = await response.json();
+      //console.log(responseData);
+      const options = responseData.results.map((city) => ({
+        value: `${city.address_line1}`,
+        label: `${city.address_line1}, ${city.country}`,
+        coord: [city.bbox ? (city.bbox.lat1 + city.bbox.lat2) / 2 : city.lat, city.bbox ? (city.bbox.lon1 + city.bbox.lon2) / 2 : city.lon],
       }));
-
+      //console.log(options);
       return { options }; // Wrap the options array in a top-level object
 
     } catch (err) {
@@ -49,13 +55,13 @@ function SearchBar({ onInputValue, unitValue }) {
       />
       <div className="flex flex-row justify-center">
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l-xl"
           onClick={() => handleUnitChange(0)}
         >
           °C
         </button>
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
+          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r-xl"
           onClick={() => handleUnitChange(1)}
         >
           °F
