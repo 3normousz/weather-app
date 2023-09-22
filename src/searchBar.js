@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { AsyncPaginate } from "react-select-async-paginate";
-import { dbCityOptions, DB_CITY_URL } from "./dbCityService";
 import './App.css';
 
 function SearchBar({ onInputValue, unitValue }) {
@@ -25,20 +24,16 @@ function SearchBar({ onInputValue, unitValue }) {
   const loadOptions = async (location) => {
     try {
       const responseData = await temp_func(location);
-      //const response = await fetch(`${DB_CITY_URL}places?limit=5&offset=0&types=CITY&namePrefix=${location}&minPopulation=50000`, dbCityOptions);
-      //const responseData = await response.json();
-      //console.log(responseData);
       const options = responseData.results.map((city) => ({
         value: `${city.address_line1}`,
         label: `${city.address_line1}, ${city.country}`,
         coord: [city.bbox ? (city.bbox.lat1 + city.bbox.lat2) / 2 : city.lat, city.bbox ? (city.bbox.lon1 + city.bbox.lon2) / 2 : city.lon],
       }));
-      //console.log(options);
-      return { options }; // Wrap the options array in a top-level object
+      return { options };
 
     } catch (err) {
       console.error(err);
-      return { options: [] }; // Return an empty options array in case of an error
+      return { options: [] };
     }
   };
 

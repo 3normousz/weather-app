@@ -8,7 +8,7 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
         return null;
     }
 
-    const { name, sys, main, weather } = weatherData;
+    const { main, weather } = weatherData;
     weather[0].description = weather[0].description[0].toUpperCase() + weather[0].description.substr(1);
 
     function kelvin_to_unit(temp, unitValue) {
@@ -44,7 +44,9 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
 
     function getCurrentTimeStampIndex(hourlyForeCast) {
         for (let i = 0; i <= 24; i++) {
-            if (hourlyForeCast.hourly.time[i] === hourlyForeCast.current_weather.time) return i;
+            if (hourlyForeCast.hourly.time[i] === hourlyForeCast.current_weather.time) {
+                return i;
+            }
         }
     };
 
@@ -118,6 +120,7 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
     }
 
 
+    console.log(hourlyForeCast.hourly.apparent_temperature[getCurrentTimeStampIndex(hourlyForeCast)]);
     return (
         <div>
             <div className='flex items-center justify-center mt-32'>
