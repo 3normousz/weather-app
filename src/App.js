@@ -48,7 +48,7 @@ function App() {
 
 
   return (
-    <div className="App mx-auto max-w-screen-md mt-4 py-5 px-32">
+    <div className="App mx-auto max-w-screen-md mt-4 py-5 px-16">
       <SearchBar onInputValue={handleInputValue} unitValue={handleUnitValue} />
       <WeatherSummary weatherData={weatherData} labelData={labelData} dailyTempData={dailyTempData} hourlyForeCast={hourlyForeCast} unitValue={unit} />
     </div>

@@ -44,7 +44,7 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
 
     function getCurrentTimeStampIndex(hourlyForeCast) {
         for (let i = 0; i <= 24; i++) {
-            if (hourlyForeCast.hourly.time[i] === hourlyForeCast.current_weather.time) {
+            if (hourlyForeCast.hourly.time[i].substring(0, 13) === hourlyForeCast.current_weather.time.substring(0, 13)) {
                 return i;
             }
         }
@@ -53,9 +53,10 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
     function HourlyForeCastComponent(props) {
         let dateElement = null;
 
-
         if (props.timestamp.substring(11, 16) === "00:00") {
             dateElement = <div className="font-bold text-l">{props.timestamp.substring(5, 10)}</div>;
+        } else if (props.index == getCurrentTimeStampIndex(hourlyForeCast)) {
+            dateElement = <div className="font-bold text-l">Now</div>;
         } else {
             dateElement = <div className="font-bold text-l">&nbsp;</div>;
         }
@@ -81,6 +82,7 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
             arr.push(
                 <HourlyForeCastComponent
                     key={i}
+                    index={i}
                     timestamp={hourly.time[i]}
                     temp={hourly.temperature_2m[i]}
                     weatherIconID={convertWeatherIcon(hourly.weathercode[i])}
@@ -119,8 +121,6 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
         else return "d";
     }
 
-
-    console.log(hourlyForeCast.hourly.apparent_temperature[getCurrentTimeStampIndex(hourlyForeCast)]);
     return (
         <div>
             <div className='flex items-center justify-center mt-32'>
@@ -133,10 +133,10 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
             <div className='flex items-center justify-center mt-4'>
                 <p className='text-black text-4xl font-bold'>{kelvin_to_unit(main.temp, unitValue)} {unitDisplay(unitValue)}</p>
             </div>
-            <div className='flex flex-row items-center justify-center'>
+            <div className='flex flex-row items-center justify-center mt-2'>
                 <p className='text-black text-lg'>{weather[0].description}</p>
             </div>
-            <div className='flex flex-row items-center justify-center mt-4'>
+            <div className='flex flex-row items-center justify-center'>
                 <p className='text-black text-lg'>
                     High: {celsius_to_unit(Math.floor(dailyTempData.daily.temperature_2m_max[0]), unitValue)} {unitDisplay(unitValue)} |
                     Low: {celsius_to_unit(Math.floor(dailyTempData.daily.temperature_2m_min[0]), unitValue)} {unitDisplay(unitValue)}
@@ -144,7 +144,7 @@ function WeatherSummary({ weatherData, labelData, dailyTempData, hourlyForeCast,
             </div>
             <div className="flex flex-col">
                 <div className="overflow-hidden">
-                    <div className="flex flex-row rounded overflow-x-auto text-black shadow-lg mt-24 bg-card">
+                    <div className="flex flex-row rounded overflow-x-auto text-black shadow-lg mt-24 bg-hourly-card">
                         {hourlyForeCastComponentCreation()}
                     </div>
                 </div>

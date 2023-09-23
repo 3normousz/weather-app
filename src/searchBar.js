@@ -48,15 +48,15 @@ function SearchBar({ onInputValue, unitValue }) {
         type="text"
         placeholder="Search City"
       />
-      <div className="flex flex-row justify-center">
+      <div className="flex flex-row justify-center ">
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l-xl"
+          className="bg-unit-card text-gray-800 font-bold py-2 px-4 rounded-l-xl"
           onClick={() => handleUnitChange(0)}
         >
           °C
         </button>
         <button
-          className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r-xl"
+          className="bg-unit-card text-gray-800 font-bold py-2 px-4 rounded-r-xl"
           onClick={() => handleUnitChange(1)}
         >
           °F
